@@ -49,7 +49,7 @@ public class Article {
 		articles[26] = new Article("Fried rice", "027", 8.5, "Chinese meals", "Hot kitchen", "Food");
 		articles[27] = new Article("Chow mein", "028", 9.5, "Chinese meals", "Hot kitchen", "Food");
 		articles[28] = new Article("Peking duck", "029", 18.5, "Chinese meals", "Hot kitchen", "Food");
-		articles[29] = new Article("General Tso's chicken", "030", 12.5, "Chinese meals", "Hot kitchen", "Food");
+		articles[29] = new Article("General Tso chicken", "030", 12.5, "Chinese meals", "Hot kitchen", "Food");
 		articles[30] = new Article("Lemon chicken", "031", 11.5, "Chinese meals", "Hot kitchen", "Food");
 		articles[31] = new Article("Beef with broccoli", "032", 12.5, "Chinese meals", "Hot kitchen", "Food");
 		articles[32] = new Article("Sweet and sour pork", "033", 11.5, "Chinese meals", "Hot kitchen", "Food");

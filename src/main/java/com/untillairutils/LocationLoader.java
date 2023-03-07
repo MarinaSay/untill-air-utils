@@ -36,23 +36,25 @@ public class LocationLoader {
 		LocationLoader loader = new LocationLoader(args[1], args[2], args[3]);
 
 		loader.loadLocation();
+		
+		
 
 	}
-
+	
 	private void loadCategories() {
-		Helpers.clickByXpath(driver, "//span[text()='Products']");
+		
 		Helpers.clickByXpath(driver, "//span[text()='Categories']");
 
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		ExpectedCondition<WebElement> c1 = ExpectedConditions
-				.elementToBeClickable(By.xpath("//tbody[@Class='ant-table-tbody']"));
+				.elementToBeClickable(By.xpath("//span[text()='Add new category']"));
 		ExpectedCondition<WebElement> c2 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add your first category']"));
 		wait.until(ExpectedConditions.or(c1, c2));
 
 		Article[] articles = Article.getTestArticles();
 		for (Article a : articles) {
-			String xp = String.format("//td[text()='%s']", a.category);
+			String xp = String.format("//span[text()='%s']", a.category);
 			if (driver.findElements(By.xpath(xp)).size() == 0) {
 				Helpers.clickByXpath(driver, "//span[text()='Add new category']");
 				Helpers.inputById(driver, "names_0", a.category);
@@ -74,7 +76,7 @@ public class LocationLoader {
 
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		ExpectedCondition<WebElement> c1 = ExpectedConditions
-				.elementToBeClickable(By.xpath("//tbody[@Class='ant-table-tbody']"));
+				.elementToBeClickable(By.xpath("//span[text()='Add new group']"));
 		ExpectedCondition<WebElement> c2 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add your first group']"));
 		wait.until(ExpectedConditions.or(c1, c2));
@@ -94,7 +96,7 @@ public class LocationLoader {
 				Helpers.inputByXpath(driver, searchFG, foodGroup);
 			}
 
-			String xp = String.format("//td[text()='%s']", foodGroup);
+			String xp = String.format("//span[text()='%s']", foodGroup);
 
 			if (driver.findElements(By.xpath(xp)).size() == 0) {
 				driver.findElement(By.xpath("//span[text()='Add new group']")).click();
@@ -123,7 +125,7 @@ public class LocationLoader {
 		Helpers.waitByXpath(driver, "//span[text()='Add new department']");
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		ExpectedCondition<WebElement> c1 = ExpectedConditions
-				.elementToBeClickable(By.xpath("//tbody[@Class='ant-table-tbody']"));
+				.elementToBeClickable(By.xpath("//span[text()='Add new department']"));
 		ExpectedCondition<WebElement> c2 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add your first department']"));
 		wait.until(ExpectedConditions.or(c1, c2));
@@ -141,7 +143,7 @@ public class LocationLoader {
 			if (driver.findElements(By.xpath(searchDep)).size() > 0) {
 				Helpers.inputByXpath(driver, searchDep, department);
 			}
-			String xp = String.format("//td[text()='%s']", department);
+			String xp = String.format("//span[text()='%s']", department);
 			if (driver.findElements(By.xpath(xp)).size() == 0) {
 				driver.findElement(By.xpath("//span[text()='Add new department']")).click();
 				Helpers.inputById(driver, "name", department);
@@ -170,7 +172,7 @@ public class LocationLoader {
 				.elementToBeClickable(By.xpath("//span[text()='Add your first course']"));
 		wait.until(ExpectedConditions.or(c1, c2));
 
-		String xp = String.format("//td[text()='%s']", "Default course");
+		String xp = String.format("//span[text()='%s']", "Default course");
 		if (driver.findElements(By.xpath(xp)).size() == 0) {
 			Helpers.clickByXpath(driver, "//span[text()='Add new course']");
 			Helpers.inputById(driver, "name", "Default course");
@@ -186,7 +188,7 @@ public class LocationLoader {
 		Helpers.waitByXpath(driver, "//span[text()='Add new article']");
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		ExpectedCondition<WebElement> c1 = ExpectedConditions
-				.elementToBeClickable(By.xpath("//tbody[@Class='ant-table-tbody']"));
+				.elementToBeClickable(By.xpath("//span[text()='Add new article']"));
 		ExpectedCondition<WebElement> c2 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add your first article']"));
 		wait.until(ExpectedConditions.or(c1, c2));
@@ -202,7 +204,7 @@ public class LocationLoader {
 			if (driver.findElements(By.xpath(searchArticle)).size() > 0) {
 				Helpers.inputByXpath(driver, searchArticle, a.name);
 			}
-			String xp = String.format("//td[text()='%s']", a.name);
+			String xp = String.format("//span[text()='%s']", a.name);
 			if (driver.findElements(By.xpath(xp)).size() == 0) {
 				driver.findElement(By.xpath("//span[text()='Add new article']")).click();
 				Helpers.inputById(driver, "name", a.name);
@@ -210,15 +212,10 @@ public class LocationLoader {
 				String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
 				Helpers.inputByXpath(driver, inputPrice, String.format("%.2f", a.price));
 
-				driver.findElement(By.id("id_departament")).click();
-				xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", a.department);
-				Helpers.waitVisibleByXpath(driver, "//div[@class='rc-virtual-list']");
-				Helpers.scrollAndClickByXpath(driver, xp);
-
-				driver.findElement(By.id("id_courses")).click();
-				xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", "Default course");
-				Helpers.waitVisibleByXpath(driver, "//div[@class='rc-virtual-list']");
-				Helpers.scrollAndClickByXpath(driver, xp);
+				Helpers.selectDropDownItem(driver, By.id("id_departament"), a.department);
+				
+				Helpers.selectDropDownItem(driver, By.id("id_courses"), "Default course");
+				
 				
 				String saveXp = "//span[text()='Save']";
 				Helpers.clickByXpath(driver, saveXp);
@@ -235,7 +232,7 @@ public class LocationLoader {
 		Auth.login(driver, login, password);
 
 		Helpers.clickByXpath(driver, "//i[@class='air-bo-2-cross']");
-
+		Helpers.clickByXpath(driver, "//span[text()='Products']");
 		loadCategories();
 		loadFoodGroups();
 		loadDepartmens();

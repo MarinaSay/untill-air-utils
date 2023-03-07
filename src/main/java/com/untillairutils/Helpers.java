@@ -1,10 +1,13 @@
 package com.untillairutils;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -59,5 +62,33 @@ public abstract class Helpers {
 		actions.moveToElement(item);
 		actions.perform();
 		item.click();
+	}
+	
+	public static void selectDropDownItem(WebDriver driver, By by, String item) {
+		WebElement dropDown = driver.findElement(by);
+		dropDown.click();
+		Helpers.waitVisibleByXpath(driver, "//div[@class='rc-virtual-list']");
+		String xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", item);
+		for (int i=0;i<100;i++) {
+			List<WebElement>list=driver.findElements(By.xpath(xp));
+			if (list.size()!=0) {
+				Actions actions = new Actions(driver);
+				actions.moveToElement(list.get(0));
+				try {
+					actions.perform();					
+				} catch (MoveTargetOutOfBoundsException e) {
+					// do nothing
+				}
+				clickByXpath(driver, xp);
+				return;
+			} 
+			dropDown.sendKeys(Keys.DOWN);
+			try {
+				Thread.sleep(30);
+			} catch(InterruptedException e) {
+				throw new RuntimeException(e);
+			} 
+		}
+		throw new RuntimeException("Item not found: "+item);
 	}
 }
