@@ -3,6 +3,7 @@ package com.untillairutils;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,11 +22,18 @@ public abstract class Helpers {
 
 	}
 	
+	public static String selectChord () {
+		String osName = System.getProperty("os.name");
+		if (osName.startsWith("Mac OS"))
+			return Keys.chord(Keys.COMMAND, "a");
+		return Keys.chord(Keys.CONTROL, "a");
+	}
+	
 	public  static void inputByXpath(WebDriver driver, String xPath, String text) {
 		waitByXpath(driver,xPath);
 		WebElement element = driver.findElement(By.xpath(xPath));
 
-		element.sendKeys(Keys.chord(Keys.COMMAND, "a"), text);
+		element.sendKeys(selectChord(), text);
 
 	}
 
@@ -33,6 +41,20 @@ public abstract class Helpers {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
 		driver.findElement(By.xpath(xPath)).click();
+	}
+
+	public  static void clickByXpathWithAttempts(WebDriver driver, String xPath, int attempts) {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
+		for (int i=0; i<attempts; i++) {
+			try {
+				driver.findElement(By.xpath(xPath)).click();
+				return;
+			} catch(ElementClickInterceptedException e) {
+				continue;
+			}
+		}
+		throw new ElementClickInterceptedException("unable to click "+xPath);
 	}
 
 	public  static void waitVisibleByXpath(WebDriver driver, String xPath) {

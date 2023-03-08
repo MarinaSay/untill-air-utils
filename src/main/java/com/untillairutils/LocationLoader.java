@@ -71,7 +71,7 @@ public class LocationLoader {
 	}
 
 	private void loadFoodGroups() {
-		Helpers.clickByXpath(driver, "//span[text()='Food groups']");
+		Helpers.clickByXpath(driver, "//span[text()='Groups']");
 		Helpers.waitByXpath(driver, "//span[text()='Add new group']");
 
 		WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -231,7 +231,7 @@ public class LocationLoader {
 		driver.get(url);
 		Auth.login(driver, login, password);
 
-		Helpers.clickByXpath(driver, "//i[@class='air-bo-2-cross']");
+		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 100);
 		Helpers.clickByXpath(driver, "//span[text()='Products']");
 		loadCategories();
 		loadFoodGroups();
