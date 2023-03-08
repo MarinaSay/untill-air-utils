@@ -44,6 +44,22 @@
 				</configuration>
 
 			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.untillairutils.LocationLoader</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
+					<finalName>airutils</finalName>
+
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
