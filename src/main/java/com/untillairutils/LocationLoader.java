@@ -229,7 +229,9 @@ public class LocationLoader {
 	public void loadLocation() {
 
 		driver.get(url);
+		driver.manage().window().maximize();
 		Auth.login(driver, login, password);
+		
 
 		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 100);
 		Helpers.clickByXpath(driver, "//span[text()='Products']");
