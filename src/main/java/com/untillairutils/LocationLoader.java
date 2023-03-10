@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,23 +18,25 @@ public class LocationLoader {
 	String login;
 	String password;
 	WebDriver driver;
+	String location;
 
-	public LocationLoader(String url, String login, String password) {
+	public LocationLoader(String url, String login, String password, String location) {
 		this.url = url;
 		this.login = login;
 		this.password = password;
 		this.driver = new ChromeDriver();
+		this.location = location;
 
 	}
 
 	public static void main(String[] args) {
-		if (args.length != 4) {
+		if (args.length != 5) {
 			System.out.print("Syntax: LocationLoader <path_to_chromedriver> <url> <username> <password> ");
 			System.exit(1);
 		}
 		System.setProperty("webdriver.chrome.driver", args[0]);
 
-		LocationLoader loader = new LocationLoader(args[1], args[2], args[3]);
+		LocationLoader loader = new LocationLoader(args[1], args[2], args[3], args[4]);
 
 		loader.loadLocation();
 		
@@ -65,6 +68,7 @@ public class LocationLoader {
 				String continueXP = "//span[text()='Continue']";
 				Helpers.clickByXpath(driver, continueXP);
 				Helpers.waitInvisibleByXpath(driver, continueXP);
+				Helpers.waitVisibleByXpath(driver, xp);
 
 			}
 		}
@@ -148,11 +152,12 @@ public class LocationLoader {
 				driver.findElement(By.xpath("//span[text()='Add new department']")).click();
 				Helpers.inputById(driver, "name", department);
 
-				driver.findElement(By.id("id_food_group")).click();
-				xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", foodGroup);
+				//driver.findElement(By.id("id_food_group")).click();
+				//xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", foodGroup);
 
-				Helpers.waitVisibleByXpath(driver, "//div[@class='rc-virtual-list']");
-				Helpers.scrollAndClickByXpath(driver, xp);
+				Helpers.selectDropDownItemById(driver, "id_food_group", foodGroup);
+				//Helpers.waitVisibleByXpath(driver, "//div[@class='rc-virtual-list']");
+				//Helpers.scrollAndClickByXpath(driver, xp);
 
 				String saveXp = "//span[text()='Save']";
 				Helpers.clickByXpath(driver, saveXp);
@@ -206,19 +211,21 @@ public class LocationLoader {
 			}
 			String xp = String.format("//span[text()='%s']", a.name);
 			if (driver.findElements(By.xpath(xp)).size() == 0) {
-				driver.findElement(By.xpath("//span[text()='Add new article']")).click();
+				Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new article']", 100);
 				Helpers.inputById(driver, "name", a.name);
 				
 				String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
 				Helpers.inputByXpath(driver, inputPrice, String.format("%.2f", a.price));
 
-				Helpers.selectDropDownItem(driver, By.id("id_departament"), a.department);
+				Helpers.selectDropDownItemById(driver, "id_departament", a.department);
 				
-				Helpers.selectDropDownItem(driver, By.id("id_courses"), "Default course");
+				Helpers.selectDropDownItemById(driver,"id_courses", "Default course");
 				
 				
 				String saveXp = "//span[text()='Save']";
 				Helpers.clickByXpath(driver, saveXp);
+				Actions actions = new Actions(driver); 
+				actions.moveByOffset(0, 50);
 				Helpers.waitInvisibleByXpath(driver, saveXp);
 			}
 		}
@@ -232,8 +239,14 @@ public class LocationLoader {
 		driver.manage().window().maximize();
 		Auth.login(driver, login, password);
 		
-
-		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 100);
+		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 10);
+		
+		
+		Helpers.selectDropDownItemByXpath(driver,"//header/div[1]/span[2]/div", location);
+		
+		
+		
+		
 		Helpers.clickByXpath(driver, "//span[text()='Products']");
 		loadCategories();
 		loadFoodGroups();
