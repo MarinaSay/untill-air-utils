@@ -39,13 +39,11 @@ public class LocationLoader {
 		LocationLoader loader = new LocationLoader(args[1], args[2], args[3], args[4]);
 
 		loader.loadLocation();
-		
-		
 
 	}
-	
+
 	private void loadCategories() {
-		
+
 		Helpers.clickByXpath(driver, "//span[text()='Categories']");
 
 		WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -152,12 +150,7 @@ public class LocationLoader {
 				driver.findElement(By.xpath("//span[text()='Add new department']")).click();
 				Helpers.inputById(driver, "name", department);
 
-				//driver.findElement(By.id("id_food_group")).click();
-				//xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", foodGroup);
-
 				Helpers.selectDropDownItemById(driver, "id_food_group", foodGroup);
-				//Helpers.waitVisibleByXpath(driver, "//div[@class='rc-virtual-list']");
-				//Helpers.scrollAndClickByXpath(driver, xp);
 
 				String saveXp = "//span[text()='Save']";
 				Helpers.clickByXpath(driver, saveXp);
@@ -197,13 +190,10 @@ public class LocationLoader {
 		ExpectedCondition<WebElement> c2 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add your first article']"));
 		wait.until(ExpectedConditions.or(c1, c2));
-		
-		
+
 		Article[] articles = Article.getTestArticles();
-		
-		for (Article a: articles) {
-			
-			
+
+		for (Article a : articles) {
 
 			String searchArticle = "//input[contains(@class, 'ant-input-borderless')]";
 			if (driver.findElements(By.xpath(searchArticle)).size() > 0) {
@@ -213,40 +203,34 @@ public class LocationLoader {
 			if (driver.findElements(By.xpath(xp)).size() == 0) {
 				Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new article']", 100);
 				Helpers.inputById(driver, "name", a.name);
-				
+
 				String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
 				Helpers.inputByXpath(driver, inputPrice, String.format("%.2f", a.price));
 
 				Helpers.selectDropDownItemById(driver, "id_departament", a.department);
-				
-				Helpers.selectDropDownItemById(driver,"id_courses", "Default course");
-				
-				
+
+				Helpers.selectDropDownItemById(driver, "id_courses", "Default course");
+
 				String saveXp = "//span[text()='Save']";
 				Helpers.clickByXpath(driver, saveXp);
-				Actions actions = new Actions(driver); 
+				Actions actions = new Actions(driver);
 				actions.moveByOffset(0, 50);
 				Helpers.waitInvisibleByXpath(driver, saveXp);
 			}
 		}
-		
+
 	}
-	
-	
+
 	public void loadLocation() {
 
 		driver.get(url);
 		driver.manage().window().maximize();
 		Auth.login(driver, login, password);
-		
+
 		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 10);
-		
-		
-		Helpers.selectDropDownItemByXpath(driver,"//header/div[1]/span[2]/div", location);
-		
-		
-		
-		
+
+		Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
+
 		Helpers.clickByXpath(driver, "//span[text()='Products']");
 		loadCategories();
 		loadFoodGroups();
