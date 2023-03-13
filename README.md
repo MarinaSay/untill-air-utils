@@ -1,4 +1,9 @@
 # unTill AIR Utils
+
+## Requirements
+  * maven;
+  * chrome;
+  * [chromedriver](https://chromedriver.chromium.org/downloads)
 ## How to build
 
 ```shell
