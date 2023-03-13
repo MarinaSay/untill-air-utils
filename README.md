@@ -1,4 +1,5 @@
 # unTill AIR Utils
+Creates 2 Categories,4 Groups 15 departaments, 100 articles.
 ## How to build
 
 ```shell
