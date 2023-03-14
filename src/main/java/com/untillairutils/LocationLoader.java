@@ -31,7 +31,7 @@ public class LocationLoader {
 
 	public static void main(String[] args) {
 		if (args.length != 5) {
-			System.out.print("Syntax: LocationLoader <path_to_chromedriver> <url> <username> <password> ");
+			System.out.print("Syntax: LocationLoader <path_to_chromedriver> <url> <username> <password> <locationname>");
 			System.exit(1);
 		}
 		System.setProperty("webdriver.chrome.driver", args[0]);
@@ -239,5 +239,7 @@ public class LocationLoader {
 		loadArticles();
 
 	}
+
+	
 
 }
