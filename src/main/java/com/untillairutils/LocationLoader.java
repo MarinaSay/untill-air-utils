@@ -83,7 +83,7 @@ public class LocationLoader {
 				.elementToBeClickable(By.xpath("//span[text()='Add your first group']"));
 		wait.until(ExpectedConditions.or(c1, c2));
 
-		Map<String, String> foodGroups = new HashMap<String, String>();
+		Map<String, String> foodGroups = new HashMap<>();
 		Article[] articles = Article.getTestArticles();
 		for (Article a : articles) {
 			foodGroups.put(a.foodGroup, a.category);
@@ -132,7 +132,7 @@ public class LocationLoader {
 				.elementToBeClickable(By.xpath("//span[text()='Add your first department']"));
 		wait.until(ExpectedConditions.or(c1, c2));
 
-		Map<String, String> departmens = new HashMap<String, String>();
+		Map<String, String> departmens = new HashMap<>();
 		Article[] articles = Article.getTestArticles();
 		for (Article a : articles) {
 			departmens.put(a.department, a.foodGroup);

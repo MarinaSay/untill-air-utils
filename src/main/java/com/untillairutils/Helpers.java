@@ -38,7 +38,7 @@ public abstract class Helpers {
 	}
 
 	public  static void clickByXpath(WebDriver driver, String xPath) {
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
 		driver.findElement(By.xpath(xPath)).click();
 	}
