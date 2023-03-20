@@ -48,9 +48,13 @@ public class LocationCleaner {
 
 		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 10);
 
-		Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
+		List<WebElement> chooseLocation = driver.findElements(By.xpath("//header/div[1]/span[2]/div"));
 
-		Helpers.clickByXpath(driver, "//span[text()='Products']");
+		if (chooseLocation.size() != 0) {
+			Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
+		} else
+
+			Helpers.clickByXpath(driver, "//span[text()='Products']");
 		cleanArticle();
 		cleanDepartments();
 		cleanCourses();

@@ -1,6 +1,9 @@
 package com.untillairutils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -31,7 +34,8 @@ public class LocationLoader {
 
 	public static void main(String[] args) {
 		if (args.length != 5) {
-			System.out.print("Syntax: LocationLoader <path_to_chromedriver> <url> <username> <password> <locationname>");
+			System.out
+					.print("Syntax: LocationLoader <path_to_chromedriver> <url> <username> <password> <locationname>");
 			System.exit(1);
 		}
 		System.setProperty("webdriver.chrome.driver", args[0]);
@@ -205,6 +209,7 @@ public class LocationLoader {
 				Helpers.inputById(driver, "name", a.name);
 
 				String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
+
 				Helpers.inputByXpath(driver, inputPrice, String.format("%.2f", a.price));
 
 				Helpers.selectDropDownItemById(driver, "id_departament", a.department);
@@ -229,9 +234,14 @@ public class LocationLoader {
 
 		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 10);
 
-		Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
+		List<WebElement> chooseLocation = driver.findElements(By.xpath("//header/div[1]/span[2]/div"));
 
-		Helpers.clickByXpath(driver, "//span[text()='Products']");
+		if (chooseLocation.size() != 0) {
+			Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
+		} else
+
+			Helpers.clickByXpath(driver, "//span[text()='Products']");
+
 		loadCategories();
 		loadFoodGroups();
 		loadDepartmens();
@@ -239,7 +249,5 @@ public class LocationLoader {
 		loadArticles();
 
 	}
-
-	
 
 }
