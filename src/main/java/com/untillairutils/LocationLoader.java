@@ -270,16 +270,16 @@ public class LocationLoader {
 		if (chooseLocation.size() != 0) {
 			Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
 		} else
-
-			Helpers.clickByXpath(driver, "//span[text()='Products']");
+		
+		
+		Helpers.clickByXpath(driver, "//span[text()='Products']");
 
 		loadCategories();
 		loadFoodGroups();
 		loadDepartmens();
 		loadCourses();
-		loadArticles();
+		//loadArticles();
 		loadUsers();
-
 	}
 
 }
