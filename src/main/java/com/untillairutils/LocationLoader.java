@@ -210,7 +210,7 @@ public class LocationLoader {
 
 				String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
 
-				Helpers.inputByXpath(driver, inputPrice, String.format("%.2f", a.price));
+				Helpers.inputByXpath(driver, inputPrice, Helpers.formatDbl(a.price));
 
 				Helpers.selectDropDownItemById(driver, "id_departament", a.department);
 
@@ -221,6 +221,37 @@ public class LocationLoader {
 				Actions actions = new Actions(driver);
 				actions.moveByOffset(0, 50);
 				Helpers.waitInvisibleByXpath(driver, saveXp);
+			}
+		}
+
+	}
+
+	private void loadUsers() {
+		Helpers.clickByXpath(driver, "//span[text()='Users']");
+		Helpers.waitByXpath(driver, "//span[text()='Add new user']");
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		ExpectedCondition<WebElement> c1 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add new user']"));
+		ExpectedCondition<WebElement> c2 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add your first user']"));
+		wait.until(ExpectedConditions.or(c1, c2));
+
+		User[] users = User.inputUsers();
+		for (User s : users) {
+			String searchUser = "//input[contains(@class, 'ant-input-borderless')]";
+			if (driver.findElements(By.xpath(searchUser)).size() > 0) {
+				Helpers.inputByXpath(driver, searchUser, s.displayName);
+			}
+			String inputDisplayName = String.format("//span[text()='%s']", s.displayName);
+			if (driver.findElements(By.xpath(inputDisplayName)).size() == 0) {
+				Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new user']", 100);
+				Helpers.inputById(driver, "name", s.displayName);
+				Helpers.inputById(driver, "firstname", s.firstName);
+				Helpers.inputById(driver, "lastname", s.lastName);
+				Helpers.selectDropDownItemById(driver, "language", s.language);
+				Helpers.inputById(driver, "user_poscode", s.posPassword);
+				String saveXp = "//span[text()='Save']";
+				Helpers.clickByXpath(driver, saveXp);
 			}
 		}
 
@@ -247,6 +278,7 @@ public class LocationLoader {
 		loadDepartmens();
 		loadCourses();
 		loadArticles();
+		loadUsers();
 
 	}
 

@@ -55,11 +55,14 @@ public class LocationCleaner {
 		} else
 
 			Helpers.clickByXpath(driver, "//span[text()='Products']");
+		
+		cleanUsers();
 		cleanArticle();
 		cleanDepartments();
 		cleanCourses();
 		cleanFoodGroups();
 		cleanCategories();
+		cleanUsers();
 	}
 
 	private void cleanArticle() {
@@ -183,5 +186,29 @@ public class LocationCleaner {
 			menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
 		}
 
+	}
+	
+	private void cleanUsers() {
+		Helpers.clickByXpath(driver, "//span[text()='Users']");
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		ExpectedCondition<WebElement> c1 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add new user']"));
+		ExpectedCondition<WebElement> c2 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add your first user']"));
+		ExpectedCondition<WebElement> c3 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//div[@class='style_header__OgYnX']"));
+		wait.until(ExpectedConditions.or(c1, c2, c3));
+		
+		List<WebElement> menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
+		
+		while(menu.size()!=0) {
+			Actions build = new Actions(driver);
+			build.moveToElement(menu.get(0)).build().perform();
+			Helpers.waitVisibleByXpath(driver, "//i[@class='air-bo-2-trash-can']");
+			Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
+			Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+			Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+			menu=driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
+		}
 	}
 }
