@@ -1,11 +1,5 @@
 package com.untillairutils;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +8,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LocationLoader {
 
@@ -71,7 +69,6 @@ public class LocationLoader {
 				Helpers.clickByXpath(driver, continueXP);
 				Helpers.waitInvisibleByXpath(driver, continueXP);
 				Helpers.waitVisibleByXpath(driver, xp);
-
 			}
 		}
 	}
@@ -256,6 +253,40 @@ public class LocationLoader {
 		}
 
 	}
+	
+	private void loadPrinters() {
+		Helpers.clickByXpath(driver, "//span[text()='General']");
+		Helpers.clickByXpath(driver, "//span[text()='Equipment']");
+		Helpers.waitByXpath(driver, "//span[text()='Add new equipment']");
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		ExpectedCondition<WebElement> c1 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add new equipment']"));
+		ExpectedCondition<WebElement> c2 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add your first equipment']"));
+		wait.until(ExpectedConditions.or(c1, c2));
+
+
+		Printer[]printers = Printer.inputPrinters();
+		for (Printer p: printers){
+			String searchPrinter = "//input[contains(@class, 'ant-input-borderless')]";
+			if (driver.findElements(By.xpath(searchPrinter)).size() > 0) {
+				Helpers.inputByXpath(driver, searchPrinter, p.name);
+			}
+		String inputPrinterName = String.format("//input[@value='%s']", p.name);
+		if (driver.findElements(By.xpath(inputPrinterName)).size() == 0){
+			Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new equipment']", 100);
+			Helpers.clickByXpathWithAttempts(driver,"//div[@class='style_element__URMig'][2]", 100);
+			Helpers.clickByXpath(driver, "//span[text()='Continue']");
+			Helpers.inputById(driver, "name", p.name);
+			Helpers.clickByXpath(driver,"//span[text()='Receipt']");
+			Helpers.selectDropDownItemById(driver, "driver_id", p.brand);
+			Helpers.scrollAndClickByXpath(driver,"//span[@class='ant-checkbox']/input[@id='null_print']");
+			String saveXp = "//span[text()='Save']";
+			Helpers.clickByXpath(driver, saveXp);
+			Helpers.clickByXpath(driver,"//span[text()='Cancel']");
+		}
+	}
+	}
 
 	public void loadLocation() {
 
@@ -270,16 +301,16 @@ public class LocationLoader {
 		if (chooseLocation.size() != 0) {
 			Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
 		} else
-		
-		
-		Helpers.clickByXpath(driver, "//span[text()='Products']");
+
+			Helpers.clickByXpath(driver, "//span[text()='Products']");
 
 		loadCategories();
 		loadFoodGroups();
 		loadDepartmens();
 		loadCourses();
-		//loadArticles();
+		loadArticles();
 		loadUsers();
+		loadPrinters();
 	}
 
 }
