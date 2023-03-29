@@ -1,7 +1,5 @@
 package com.untillairutils;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 public class LocationCleaner {
 	String url;
@@ -57,12 +57,13 @@ public class LocationCleaner {
 			Helpers.clickByXpath(driver, "//span[text()='Products']");
 
 		cleanUsers();
+		cleanPrinters();
 		cleanArticle();
 		cleanDepartments();
 		cleanCourses();
 		cleanFoodGroups();
 		cleanCategories();
-		cleanUsers();
+
 	}
 
 	private void cleanArticle() {
@@ -195,6 +196,30 @@ public class LocationCleaner {
 				.elementToBeClickable(By.xpath("//span[text()='Add new user']"));
 		ExpectedCondition<WebElement> c2 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add your first user']"));
+		ExpectedCondition<WebElement> c3 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//div[@class='style_header__OgYnX']"));
+		wait.until(ExpectedConditions.or(c1, c2, c3));
+
+		List<WebElement> menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
+
+		while (menu.size() != 0) {
+			Actions build = new Actions(driver);
+			build.moveToElement(menu.get(0)).build().perform();
+			Helpers.waitVisibleByXpath(driver, "//i[@class='air-bo-2-trash-can']");
+			Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
+			Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+			Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+			menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
+		}
+	}
+	private void cleanPrinters() {
+		Helpers.scrollAndClickByXpath(driver, "//span[text()='General']");
+		Helpers.clickByXpath(driver, "//span[text()='Equipment']");
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		ExpectedCondition<WebElement> c1 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add new equipment']"));
+		ExpectedCondition<WebElement> c2 = ExpectedConditions
+				.elementToBeClickable(By.xpath("//span[text()='Add your first equipment']"));
 		ExpectedCondition<WebElement> c3 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//div[@class='style_header__OgYnX']"));
 		wait.until(ExpectedConditions.or(c1, c2, c3));
