@@ -12,7 +12,7 @@ public class Printer {
     public static Printer[] inputPrinters(){
         Printer[] printers = new Printer[2];
         printers[0] = new Printer("Printer1", "Citizen");
-        printers[1] = new Printer("Printer2", "Citizen");
+        printers[1] = new Printer("printer2", "Citizen");
         return printers;
     }
 }

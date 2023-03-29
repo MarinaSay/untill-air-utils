@@ -255,7 +255,7 @@ public class LocationLoader {
 	}
 	
 	private void loadPrinters() {
-		Helpers.clickByXpath(driver, "//span[text()='General']");
+		Helpers.clickByXpathWithAttempts(driver, "//span[text()='General']",10);
 		Helpers.clickByXpath(driver, "//span[text()='Equipment']");
 		Helpers.waitByXpath(driver, "//span[text()='Add new equipment']");
 		WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -272,7 +272,8 @@ public class LocationLoader {
 			if (driver.findElements(By.xpath(searchPrinter)).size() > 0) {
 				Helpers.inputByXpath(driver, searchPrinter, p.name);
 			}
-		String inputPrinterName = String.format("//input[@value='%s']", p.name);
+			String inputPrinterName = String.format("//span[text()='%s']", p.name);
+			//String inputPrinterName = String.format("//input[@value='%s']", p.name);
 		if (driver.findElements(By.xpath(inputPrinterName)).size() == 0){
 			Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new equipment']", 100);
 			Helpers.clickByXpathWithAttempts(driver,"//div[@class='style_element__URMig'][2]", 100);
@@ -283,7 +284,8 @@ public class LocationLoader {
 			Helpers.scrollAndClickByXpath(driver,"//span[@class='ant-checkbox']/input[@id='null_print']");
 			String saveXp = "//span[text()='Save']";
 			Helpers.clickByXpath(driver, saveXp);
-			Helpers.clickByXpath(driver,"//span[text()='Cancel']");
+			Helpers.waitVisibleByXpath(driver,"//span[text()='ready to use']");
+			Helpers.clickByXpathWithAttempts(driver,"//span[text()='Cancel']",10);
 		}
 	}
 	}

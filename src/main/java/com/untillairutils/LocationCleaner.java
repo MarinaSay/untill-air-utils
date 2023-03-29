@@ -56,13 +56,14 @@ public class LocationCleaner {
 
 			Helpers.clickByXpath(driver, "//span[text()='Products']");
 
-		cleanUsers();
-		cleanPrinters();
+
 		cleanArticle();
 		cleanDepartments();
 		cleanCourses();
 		cleanFoodGroups();
 		cleanCategories();
+		cleanUsers();
+		cleanPrinters();
 
 	}
 
