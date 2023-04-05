@@ -296,14 +296,13 @@ public class LocationLoader {
 		driver.manage().window().maximize();
 		Auth.login(driver, login, password);
 
-		Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 10);
+
 
 		List<WebElement> chooseLocation = driver.findElements(By.xpath("//header/div[1]/span[2]/div"));
 
 		if (chooseLocation.size() != 0) {
 			Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
 		} else
-
 			Helpers.clickByXpath(driver, "//span[text()='Products']");
 
 		loadCategories();
