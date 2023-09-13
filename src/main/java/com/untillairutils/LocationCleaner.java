@@ -52,9 +52,11 @@ public class LocationCleaner {
 
 		if (chooseLocation.size() != 0) {
 			Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
-		} else
+		}
 
-			Helpers.clickByXpath(driver, "//span[text()='Products']");
+		initSettings();
+
+		Helpers.clickByXpath(driver, "//span[text()='Products']");
 
 
 		cleanArticle();
@@ -62,9 +64,19 @@ public class LocationCleaner {
 		cleanCourses();
 		cleanFoodGroups();
 		cleanCategories();
-		cleanUsers();
+		cleanPosUsers();
 		cleanPrinters();
 
+	}
+	private void initSettings() {
+		Helpers.clickByXpath(driver, "//span[text()='Settings']");
+		Helpers.clickByXpath(driver, "//li[text()='Restaurant']");
+
+		WebElement checkbox = driver.findElement(By.xpath("//input[@id='UseCourses']"));
+		if (!checkbox.isSelected()) {
+			checkbox.click();
+			Helpers.clickByXpath(driver,"//button[@type='submit']");
+		}
 	}
 
 	private void cleanArticle() {
@@ -190,8 +202,8 @@ public class LocationCleaner {
 
 	}
 
-	private void cleanUsers() {
-		Helpers.scrollAndClickByXpath(driver, "//span[text()='Users']");
+	private void cleanPosUsers() {
+		Helpers.scrollAndClickByXpath(driver, "//span[text()='POS Users']");
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		ExpectedCondition<WebElement> c1 = ExpectedConditions
 				.elementToBeClickable(By.xpath("//span[text()='Add new user']"));
