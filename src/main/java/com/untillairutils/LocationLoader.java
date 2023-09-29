@@ -51,7 +51,7 @@ public class LocationLoader {
         WebElement checkbox = driver.findElement(By.xpath("//input[@id='UseCourses']"));
         if (!checkbox.isSelected()) {
             checkbox.click();
-            Helpers.clickByXpath(driver,"//button[@type='submit']");
+            Helpers.clickByXpath(driver, "//button[@type='submit']");
         }
     }
 
@@ -307,11 +307,12 @@ public class LocationLoader {
         driver.manage().window().maximize();
         Auth.login(driver, login, password);
 
-
-        List<WebElement> chooseLocation = driver.findElements(By.xpath("//header/div[1]/span[2]/div"));
+        Helpers.waitVisibleByXpath(driver, "//header");
+        String locationXPATH = "//header//div[contains(@class, 'ant-select')]";
+        List<WebElement> chooseLocation = driver.findElements(By.xpath(locationXPATH));
 
         if (chooseLocation.size() != 0) {
-            Helpers.selectDropDownItemByXpath(driver, "//header/div[1]/span[2]/div", location);
+            Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
         }
 
         initSettings();

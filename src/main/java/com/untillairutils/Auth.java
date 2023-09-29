@@ -20,4 +20,11 @@ public class Auth {
 
 		Helpers.clickByXpath(driver,"//button[@type='submit']");
 	}
+
+	public static void logout (WebDriver driver) {
+		Helpers.clickByXpathWithAttempts(driver,"//span[contains(@class, 'ant-avatar-lg')]",10);
+		Helpers.clickByXpathWithAttempts(driver,"//span[text()='Logout']",10);
+	}
+
+
 }

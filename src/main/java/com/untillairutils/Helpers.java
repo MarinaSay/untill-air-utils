@@ -55,7 +55,7 @@ public abstract class Helpers {
 	}
 
 	public static void waitVisibleByXpath(WebDriver driver, String xPath) {
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
 	}
 
