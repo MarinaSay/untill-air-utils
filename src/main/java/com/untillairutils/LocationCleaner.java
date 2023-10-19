@@ -1,5 +1,6 @@
 package com.untillairutils;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,20 +23,19 @@ public class LocationCleaner {
         this.url = url;
         this.login = login;
         this.password = password;
+        WebDriverManager.chromedriver().setup();
         this.driver = new ChromeDriver();
         this.location = location;
 
     }
 
     public static void main(String[] args) {
-        if (args.length != 5) {
+        if (args.length != 4) {
             System.out
-                    .print("Syntax: LocationCleaner <path_to_chromedriver> <url> <username> <password> <locationname>");
+                    .print("Syntax: LocationCleaner <url> <username> <password> <locationname>");
             System.exit(1);
         }
-        System.setProperty("webdriver.chrome.driver", args[0]);
-
-        LocationCleaner loader = new LocationCleaner(args[1], args[2], args[3], args[4]);
+        LocationCleaner loader = new LocationCleaner(args[0], args[1], args[2], args[3]);
 
         loader.cleanLocation();
 
@@ -67,12 +67,13 @@ public class LocationCleaner {
         cleanCategories();
         cleanPosUsers();
         cleanPrinters();
+//        cleanSpaces();
 
     }
 
     private void initSettings() {
         Helpers.clickByXpath(driver, "//span[text()='Settings']");
-        Helpers.clickByXpath(driver, "//li[text()='Restaurant']");
+        Helpers.clickByXpath(driver, "//li[text()='Location']");
 
         WebElement checkbox = driver.findElement(By.xpath("//input[@id='UseCourses']"));
         if (!checkbox.isSelected()) {
@@ -250,6 +251,30 @@ public class LocationCleaner {
             Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
+        }
+    }
+
+    private void cleanSpaces(){
+        Helpers.clickByXpath(driver, "//span[text()='Spaces']");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        ExpectedCondition<WebElement> c1 = ExpectedConditions
+                .elementToBeClickable(By.xpath("//span[text()='Add new space']"));
+        ExpectedCondition<WebElement> c2 = ExpectedConditions
+                .elementToBeClickable(By.xpath("//span[text()='Add your first space']"));
+        ExpectedCondition<WebElement> c3 = ExpectedConditions
+                .elementToBeClickable(By.xpath("//div[@class='style_header__OgYnX']"));
+        wait.until(ExpectedConditions.or(c1, c2,c3));
+        String spaceXP = "//i[@class='air-bo-2-trash-can']";
+        List<WebElement> menu = driver.findElements(By.xpath(spaceXP));
+        while (menu.size() != 0) {
+            Actions build = new Actions(driver);
+            build.moveToElement(menu.get(0)).build().perform();
+            Helpers.waitVisibleByXpath(driver, spaceXP);
+            Helpers.clickByXpath(driver, spaceXP);
+            Helpers.waitVisibleByXpath(driver, "//div[text()='Are you sure?']");
+            Helpers.clickByXpath(driver, "//span[text()='Yes']");
+
+            menu = driver.findElements(By.xpath(spaceXP));
         }
     }
 }

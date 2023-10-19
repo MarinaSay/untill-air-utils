@@ -35,7 +35,7 @@ public abstract class Helpers {
 	}
 
 	public static void clickByXpath(WebDriver driver, String xPath) {
-		WebDriverWait wait = new WebDriverWait(driver, 30);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
 		driver.findElement(By.xpath(xPath)).click();
 	}
@@ -55,12 +55,12 @@ public abstract class Helpers {
 	}
 
 	public static void waitVisibleByXpath(WebDriver driver, String xPath) {
-		WebDriverWait wait = new WebDriverWait(driver, 20);
+		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
 	}
 
 	public static void waitInvisibleByXpath(WebDriver driver, String xPath) {
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(xPath)));
 	}
 

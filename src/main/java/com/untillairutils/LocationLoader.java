@@ -1,5 +1,6 @@
 package com.untillairutils;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,20 +26,19 @@ public class LocationLoader {
         this.url = url;
         this.login = login;
         this.password = password;
+        WebDriverManager.chromedriver().setup();
         this.driver = new ChromeDriver();
         this.location = location;
 
     }
 
     public static void main(String[] args) {
-        if (args.length != 5) {
+        if (args.length != 4) {
             System.out
-                    .print("Syntax: LocationLoader <path_to_chromedriver> <url> <username> <password> <locationname>");
+                    .print("Syntax: LocationLoader <url> <username> <password> <locationname>");
             System.exit(1);
         }
-        System.setProperty("webdriver.chrome.driver", args[0]);
-
-        LocationLoader loader = new LocationLoader(args[1], args[2], args[3], args[4]);
+        LocationLoader loader = new LocationLoader(args[0], args[1], args[2], args[3]);
 
         loader.loadLocation();
 
@@ -46,7 +46,7 @@ public class LocationLoader {
 
     private void initSettings() {
         Helpers.clickByXpath(driver, "//span[text()='Settings']");
-        Helpers.clickByXpath(driver, "//li[text()='Restaurant']");
+        Helpers.clickByXpath(driver, "//li[text()='Location']");
 
         WebElement checkbox = driver.findElement(By.xpath("//input[@id='UseCourses']"));
         if (!checkbox.isSelected()) {
@@ -297,35 +297,68 @@ public class LocationLoader {
                 Helpers.clickByXpath(driver, saveXp);
                 Helpers.waitVisibleByXpath(driver, "//span[text()='Add equipment']");
                 Helpers.clickByXpathWithAttempts(driver, "//span[text()='Ok']", 10);
+                Helpers.clickByXpath(driver, "//span[text()='General']");
             }
         }
     }
 
-    public void loadLocation() {
+    private void loadSpaces() {
+        Helpers.clickByXpath(driver, "//span[text()='Spaces']");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        ExpectedCondition<WebElement> c1 = ExpectedConditions
+                .elementToBeClickable(By.xpath("//span[text()='Add new space']"));
+        ExpectedCondition<WebElement> c2 = ExpectedConditions
+                .elementToBeClickable(By.xpath("//span[text()='Add your first space']"));
+        wait.until(ExpectedConditions.or(c1, c2));
 
-        driver.get(url);
-        driver.manage().window().maximize();
-        Auth.login(driver, login, password);
+        Space[] spaces = Space.inputSpaces();
+        for (Space s : spaces) {
+            String searchSpace = "//input[contains(@class, 'ant-input-borderless')]";
+            if (driver.findElements(By.xpath(searchSpace)).size() > 0) {
+                Helpers.inputByXpath(driver, searchSpace, s.name);
+            }
+            String inputSpaceName = String.format("//span[text()='%s']", s.name);
+            //String inputPrinterName = String.format("//input[@value='%s']", p.name);
+            if (driver.findElements(By.xpath(inputSpaceName)).size() == 0) {
+                Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new space']", 10);
+                Helpers.inputById(driver, "name", s.name);
+                Helpers.inputByXpath(driver, "//input[@role='spinbutton']", s.numberOfTables);
+                String saveXp = "//span[text()='Continue']";
+                Helpers.clickByXpath(driver, saveXp);
 
-        Helpers.waitVisibleByXpath(driver, "//header");
-        String locationXPATH = "//header//div[contains(@class, 'ant-select')]";
-        List<WebElement> chooseLocation = driver.findElements(By.xpath(locationXPATH));
+            }
 
-        if (chooseLocation.size() != 0) {
-            Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
+        }
+    }
+        public void loadLocation() {
+
+            driver.get(url);
+            driver.manage().window().maximize();
+            Auth.login(driver, login, password);
+
+            Helpers.waitVisibleByXpath(driver, "//header");
+            String locationXPATH = "//header//div[contains(@class, 'ant-select')]";
+            List<WebElement> chooseLocation = driver.findElements(By.xpath(locationXPATH));
+
+            if (chooseLocation.size() != 0) {
+                Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
+            }
+
+            initSettings();
+
+            Helpers.clickByXpath(driver, "//span[text()='Products']");
+
+
+            loadCategories();
+           loadFoodGroups();
+            loadDepartmens();
+            loadCourses();
+            loadArticles();
+            loadPosUsers();
+            loadPrinters();
+//            loadSpaces();
+
         }
 
-        initSettings();
-
-        Helpers.clickByXpath(driver, "//span[text()='Products']");
-
-        loadCategories();
-        loadFoodGroups();
-        loadDepartmens();
-        loadCourses();
-        loadArticles();
-        loadPosUsers();
-        loadPrinters();
     }
 
-}
