@@ -19,9 +19,9 @@ public class User {
 
 	public static User[] inputUsers() {
 		User[] users = new User[3];
-		users[0] = new User("Magda", "Magda", "Magda", "Dutch", "1");
+		users[0] = new User("Magda", "Magda", "Magda", "Nederlands", "1");
 		users[1] = new User("Frank", "Frank", "Frank", "English", "2");
-		users[2] = new User("Elena", "Elena", "Elena", "French", "4");
+		users[2] = new User("Elena", "Elena", "Elena", "Français", "4");
 		return users;
 	}
 

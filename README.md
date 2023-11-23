@@ -1,7 +1,14 @@
 # unTill AIR Utils
 
 ## Requirements
+  * JDK 1.8 or higher
   * maven;
+
+#### Example how to install on Windows
+```shell
+choco install jdk8 maven
+```
+
 ## How to build
 
 ```shell
