@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if the correct number of arguments are provided
+if [ "$#" -ne 5 ]; then
+    echo "Usage: $0 <load|clean> <url> <login> <password> <location_name>"
+    exit 1
+fi
+
+# Set the Java classpath and execute the Java command based on the first argument
+case "$1" in
+    "load")
+        java -cp ./target/airutils.jar com.untillairutils.LocationLoader "$2" "$3" "$4" "$5"
+        ;;
+    "clean")
+        java -cp ./target/airutils.jar com.untillairutils.LocationCleaner "$2" "$3" "$4" "$5"
+        ;;
+    *)
+        echo "Invalid option. Use 'load' or 'clean' as the first argument."
+        exit 1
+        ;;
+esac
