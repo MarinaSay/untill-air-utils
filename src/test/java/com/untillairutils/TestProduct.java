@@ -17,7 +17,7 @@ import static com.untillairutils.Helpers.formatDbl;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertFalse;
 
-class BasicTest {
+class TestProduct {
     WebDriver driver;
 
 
@@ -93,23 +93,7 @@ class BasicTest {
         assertFalse(driver.findElements(By.id("user_email")).isEmpty());
     }
 
-    @Test
-    void testSpaces() {
-        Helpers.clickByXpath(driver, "//span[text()='Spaces']");
-        Helpers.waitByXpath(driver, "//span[text()='Add new space']");
-        Helpers.clickByXpathWithAttempts(driver, "//span[text()='Add new space']", 10);
-        Helpers.inputById(driver, "name", "Lounge");
-        Helpers.inputByXpath(driver, "//input[contains(@class, 'ant-input-number-input')]", "5");
-        Helpers.clickByXpath(driver, "//span[text()='Continue']");
-        Helpers.waitByXpath(driver, "//div[text()='Lounge']");
-        assertFalse(driver.findElements(By.xpath("//div[text()='Lounge']")).isEmpty());
-        assertFalse(driver.findElements(By.xpath("//div[text()='5 tables']")).isEmpty());
-        Helpers.waitVisibleByXpath(driver, "//i[@class='air-bo-2-trash-can']");
-        Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-trash-can']", 5);
-        Helpers.waitVisibleByXpath(driver, "//div[text()='Are you sure?']");
-        Helpers.clickByXpath(driver, "//span[text()='Yes']");
 
-    }
 
     public void deleteFirstItem() {
         String del = "//div[@class='antd-table-row-actions']";
@@ -190,63 +174,5 @@ class BasicTest {
         Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
     }
 
-    @Test
-    void testPosUser() {
-        Helpers.clickByXpath(driver, "//span[text()='POS Users']");
-        Helpers.waitByXpath(driver, "//span[text()='Add new user']");
-        Helpers.clickByXpath(driver, "//span[text()='Add new user']");
-        Helpers.inputById(driver, "name", "Mary");
-        Helpers.inputById(driver, "firstname", "Maria");
-        Helpers.inputById(driver, "lastname", "Lopez");
-        Helpers.selectDropDownItemById(driver, "language", "English");
-        Helpers.inputById(driver, "user_poscode", "111");
-        Helpers.clickByXpath(driver, "//span[text()='Save']");
-        Helpers.waitVisibleByXpath(driver, "//span[text()='Mary']");
-        assertFalse(driver.findElements(By.xpath("//span[text()='Mary']")).isEmpty());
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Mary']")).isEmpty());
-        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
-    }
 
-    @Test
-    void testDiscount() {
-        Helpers.clickByXpath(driver, "//span[text()='General']");
-        Helpers.clickByXpath(driver, "//span[text()='Discounts']");
-        Helpers.waitByXpath(driver, "//span[text()='Add new discount']");
-        Helpers.clickByXpath(driver, "//span[text()='Add new discount']");
-        Helpers.inputById(driver, "name", "Monday");
-        Helpers.selectDropDownItemById(driver, "value_type", "Percent");
-        String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
-        Helpers.inputByXpath(driver, inputPrice, formatDbl(10));
-        Helpers.selectDropDownItemById(driver, "discount_type", "Whole bill");
-        Helpers.selectDropDownItemById(driver, "check_type", "All items");
-        Helpers.selectDropDownItemById(driver, "id_discount_reasons", "Free discount reason");
-        Helpers.clickByXpath(driver, "//span[text()='Save']");
-        Helpers.waitVisibleByXpath(driver, "//span[text()='Monday']");
-        assertFalse(driver.findElements(By.xpath("//span[text()='Monday']")).isEmpty());
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Monday']")).isEmpty());
-        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
-    }
-
-    @Test
-    void testNewReceiptPrinter() {
-        Helpers.clickByXpath(driver, "//span[text()='General']");
-        Helpers.clickByXpath(driver, "//span[text()='Equipment']");
-        Helpers.waitByXpath(driver, "//span[text()='Add new equipment']");
-        Helpers.clickByXpath(driver, "//span[text()='Add new equipment']");
-        Helpers.waitByXpath(driver, "//span[text()='Printer']");
-        Helpers.clickByXpath(driver, "//span[text()='Printer']");
-        confirmContinue();
-        Helpers.inputById(driver, "name", "Kitchen");
-        Helpers.clickByXpath(driver, "//span[text()='Receipt']");
-        Helpers.clickByXpath(driver, "//span[text()='Save']");
-        Helpers.waitVisibleByXpath(driver, "//span[text()='Kitchen']");
-        assertFalse(driver.findElements(By.xpath("//span[text()='Kitchen']")).isEmpty());
-        Helpers.clickByXpathWithAttempts(driver, "//span[text()='Ok']", 10);
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Kitchen']")).isEmpty());
-        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
-
-    }
 }
