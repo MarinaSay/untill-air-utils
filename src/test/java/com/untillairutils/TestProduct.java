@@ -21,7 +21,7 @@ class TestProduct extends TestBase{
     @AfterEach
     void tearDown() {
 
-        //logout();
+        logout();
     }
 
 
@@ -29,20 +29,11 @@ class TestProduct extends TestBase{
         LocationCleaner cleaner = new LocationCleaner(driver,
                 getRequiredEnv(ENV_LOGIN), getRequiredEnv(ENV_PASSWORD),
                 getRequiredEnv(ENV_LOCATION), getRequiredEnv(ENV_URL));
-        cleaner.openProducts();
-        cleaner.cleanArticles();
-        cleaner.cleanDepartments();
-        cleaner.cleanFoodGroups();
-        cleaner.cleanCourses();
-        cleaner.cleanCategories();
+        cleaner.cleanProducts();
+
     }
 
-    private void sleep() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-        }
-    }
+
     @Test
     void testCreateProduct() {
         cleanupProduct();
@@ -50,8 +41,7 @@ class TestProduct extends TestBase{
         Helpers.clickByXpath(driver, "//span[text()='Add new category']");
         Helpers.inputById(driver, "names_0", "Food");
         confirmContinue();
-        sleep();
-        assertFalse(driver.findElements(By.xpath("//span[text()='Food']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver,"//span[text()='Food']");
         Helpers.clickByXpath(driver, "//span[text()='Groups']");
         Helpers.waitVisibleByXpath(driver, "//span[text()='Add new group']");
         Helpers.clickByXpath(driver, "//span[text()='Add new group']");
@@ -64,7 +54,7 @@ class TestProduct extends TestBase{
         String vatXp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", "Standard");
         Helpers.clickByXpath(driver, vatXp);
         confirmContinue();
-        assertFalse(driver.findElements(By.xpath("//span[text()='Hot']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Hot']");
         Helpers.clickByXpath(driver, "//span[text()='Departments']");
         Helpers.waitVisibleByXpath(driver, "//span[text()='Add new department']");
         Helpers.clickByXpath(driver, "//span[text()='Add new department']");
@@ -76,7 +66,7 @@ class TestProduct extends TestBase{
         String saveXp = "//span[text()='Save']";
         Helpers.clickByXpath(driver, saveXp);
         Helpers.waitInvisibleByXpath(driver, saveXp);
-        assertFalse(driver.findElements(By.xpath("//span[text()='Pizza']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Pizza']");
         Helpers.clickByXpath(driver, "//span[text()='Articles']");
         Helpers.waitVisibleByXpath(driver, "//span[text()='Add new article']");
         Helpers.clickByXpath(driver, "//span[text()='Add new article']");
@@ -88,25 +78,21 @@ class TestProduct extends TestBase{
         Helpers.selectDropDownItemById(driver, "id_courses", "No course");
         Helpers.clickByXpath(driver, saveXp);
         Helpers.waitInvisibleByXpath(driver, saveXp);
-        assertFalse(driver.findElements(By.xpath("//span[text()='Margarita']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Margarita']");
     }
 
     @Test
-    @Disabled
     void testDeleteProduct() {
+        cleanupProduct();
         Helpers.clickByXpath(driver, "//span[text()='Articles']");
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Margarita']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Add your first article']");
         Helpers.clickByXpath(driver, "//span[text()='Departments']");
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Pizza']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Add your first department']");
         Helpers.clickByXpath(driver, "//span[text()='Groups']");
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Hot']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Add your first group']");
         Helpers.clickByXpath(driver, "//span[text()='Categories']");
-        deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Food']")).isEmpty());
-        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Add your first category']");
+        //Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
     }
 
 }
