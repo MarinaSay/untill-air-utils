@@ -8,23 +8,18 @@ import org.openqa.selenium.WebElement;
 
 public class Auth {
 
-	public static void login (WebDriver driver, String login, String password) {
-		List<WebElement> logout = driver.findElements(By.xpath("//span[text()='Logout']"));
-		if (logout.size() > 0) {
-			logout.get(0).click();
-		}
+    public static void login(WebDriver driver, String login, String password) {
+        List<WebElement> logout = driver.findElements(By.xpath("//span[text()='Logout']"));
+        if (logout.size() > 0) {
+            logout.get(0).click();
+        }
 
-		Helpers.waitId(driver,"normal_login_login");
-		Helpers.inputById(driver,"normal_login_login", login);
-		Helpers.inputById(driver,"normal_login_password", password);
+        Helpers.waitId(driver, "normal_login_login");
+        Helpers.inputById(driver, "normal_login_login", login);
+        Helpers.inputById(driver, "normal_login_password", password);
 
-		Helpers.clickByXpath(driver,"//button[@type='submit']");
-	}
-
-	public static void logout (WebDriver driver) {
-		Helpers.clickByXpathWithAttempts(driver,"//span[contains(@class, 'ant-avatar-lg')]",10);
-		Helpers.clickByXpathWithAttempts(driver,"//span[text()='Logout']",10);
-	}
+        Helpers.clickByXpath(driver, "//button[@type='submit']");
+    }
 
 
 }

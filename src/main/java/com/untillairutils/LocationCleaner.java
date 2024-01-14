@@ -16,18 +16,9 @@ public class LocationCleaner {
     String url;
     String login;
     String password;
-    WebDriver driver;
+
     String location;
-
-    public LocationCleaner(String url, String login, String password, String location) {
-        this.url = url;
-        this.login = login;
-        this.password = password;
-        WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
-        this.location = location;
-
-    }
+    WebDriver driver;
 
     public static void main(String[] args) {
         if (args.length != 4) {
@@ -35,16 +26,33 @@ public class LocationCleaner {
                     .print("Syntax: LocationCleaner <url> <username> <password> <locationname>");
             System.exit(1);
         }
-        LocationCleaner loader = new LocationCleaner(args[0], args[1], args[2], args[3]);
 
-        loader.cleanLocation();
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
 
-    }
+        String url = args[0];
+        String login = args[1];
+        String password = args[2];
 
-    public void cleanLocation() {
         driver.get(url);
         driver.manage().window().maximize();
         Auth.login(driver, login, password);
+
+        LocationCleaner cleaner = new LocationCleaner(driver, args[1], args[2], args[3], args[0]);
+        cleaner.cleanLocation();
+
+    }
+
+    public LocationCleaner(WebDriver driver, String user, String password, String location, String url) {
+        this.driver = driver;
+        this.login = user;
+        this.password = password;
+        this.url = url;
+        this.location = location;
+    }
+
+    public void cleanLocation() {
+
 
         Helpers.clickByXpathWithAttempts(driver, "//i[@class='air-bo-2-cross']", 10);
         Helpers.waitVisibleByXpath(driver, "//header");
@@ -55,34 +63,22 @@ public class LocationCleaner {
             Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
         }
 
-        initSettings();
-
-        Helpers.clickByXpath(driver, "//span[text()='Products']");
-
-
-        cleanArticle();
+        openProducts();
+        cleanArticles();
         cleanDepartments();
         cleanCourses();
         cleanFoodGroups();
         cleanCategories();
         cleanPosUsers();
         cleanPrinters();
-//        cleanSpaces();
-
+        cleanSpaces();
     }
 
-    private void initSettings() {
-        Helpers.clickByXpath(driver, "//span[text()='Settings']");
-        Helpers.clickByXpath(driver, "//li[text()='Location']");
-
-        WebElement checkbox = driver.findElement(By.xpath("//input[@id='UseCourses']"));
-        if (!checkbox.isSelected()) {
-            checkbox.click();
-            Helpers.clickByXpath(driver, "//button[@type='submit']");
-        }
+    public void openProducts() {
+        Helpers.clickByXpath(driver, "//span[text()='Products']");
     }
 
-    private void cleanArticle() {
+    public void cleanArticles() {
         Helpers.clickByXpath(driver, "//span[text()='Articles']");
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -103,13 +99,14 @@ public class LocationCleaner {
             Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
             Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+            sleep();
             menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
         }
 
-        Helpers.clickByXpath(driver, "//span[text()='Departments']");
     }
 
-    private void cleanDepartments() {
+    public void cleanDepartments() {
+        Helpers.clickByXpath(driver, "//span[text()='Departments']");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new department']"));
@@ -128,12 +125,13 @@ public class LocationCleaner {
             Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
             Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+            sleep();
             menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
         }
-        Helpers.clickByXpath(driver, "//span[text()='Courses']");
     }
 
-    private void cleanCourses() {
+    public void cleanCourses() {
+        Helpers.clickByXpath(driver, "//span[text()='Courses']");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new course']"));
@@ -152,12 +150,13 @@ public class LocationCleaner {
             Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
             Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+            sleep();
             menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
         }
-        Helpers.clickByXpath(driver, "//span[text()='Groups']");
     }
 
-    private void cleanFoodGroups() {
+    public void cleanFoodGroups() {
+        Helpers.clickByXpath(driver, "//span[text()='Groups']");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new group']"));
@@ -176,12 +175,13 @@ public class LocationCleaner {
             Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
             Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+            sleep();
             menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
         }
-        Helpers.clickByXpath(driver, "//span[text()='Categories']");
     }
 
-    private void cleanCategories() {
+    public void cleanCategories() {
+        Helpers.clickByXpath(driver, "//span[text()='Categories']");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new category']"));
@@ -200,9 +200,16 @@ public class LocationCleaner {
             Helpers.clickByXpath(driver, "//i[@class='air-bo-2-trash-can']");
             Helpers.waitVisibleByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
             Helpers.clickByXpath(driver, "//button[@class='ant-btn ant-btn-primary ant-btn-sm']");
+            sleep();
             menu = driver.findElements(By.xpath("//div[@class='antd-table-row-actions']"));
         }
+    }
 
+    private void sleep() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+        }
     }
 
     private void cleanPosUsers() {
@@ -254,7 +261,7 @@ public class LocationCleaner {
         }
     }
 
-    private void cleanSpaces(){
+    private void cleanSpaces() {
         Helpers.clickByXpath(driver, "//span[text()='Spaces']");
         WebDriverWait wait = new WebDriverWait(driver, 10);
         ExpectedCondition<WebElement> c1 = ExpectedConditions
@@ -263,7 +270,7 @@ public class LocationCleaner {
                 .elementToBeClickable(By.xpath("//span[text()='Add your first space']"));
         ExpectedCondition<WebElement> c3 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//div[@class='style_header__OgYnX']"));
-        wait.until(ExpectedConditions.or(c1, c2,c3));
+        wait.until(ExpectedConditions.or(c1, c2, c3));
         String spaceXP = "//i[@class='air-bo-2-trash-can']";
         List<WebElement> menu = driver.findElements(By.xpath(spaceXP));
         while (menu.size() != 0) {

@@ -330,35 +330,36 @@ public class LocationLoader {
 
         }
     }
-        public void loadLocation() {
 
-            driver.get(url);
-            driver.manage().window().maximize();
-            Auth.login(driver, login, password);
+    public void loadLocation() {
 
-            Helpers.waitVisibleByXpath(driver, "//header");
-            String locationXPATH = "//header//div[contains(@class, 'ant-select')]";
-            List<WebElement> chooseLocation = driver.findElements(By.xpath(locationXPATH));
+        driver.get(url);
+        driver.manage().window().maximize();
+        Auth.login(driver, login, password);
 
-            if (chooseLocation.size() != 0) {
-                Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
-            }
+        Helpers.waitVisibleByXpath(driver, "//header");
+        String locationXPATH = "//header//div[contains(@class, 'ant-select')]";
+        List<WebElement> chooseLocation = driver.findElements(By.xpath(locationXPATH));
 
-            initSettings();
-
-            Helpers.clickByXpath(driver, "//span[text()='Products']");
-
-
-            loadCategories();
-           loadFoodGroups();
-            loadDepartmens();
-            loadCourses();
-            loadArticles();
-            loadPosUsers();
-            loadPrinters();
-//            loadSpaces();
-
+        if (chooseLocation.size() != 0) {
+            Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
         }
 
+        initSettings();
+
+        Helpers.clickByXpath(driver, "//span[text()='Products']");
+
+
+        loadCategories();
+        loadFoodGroups();
+        loadDepartmens();
+        loadCourses();
+        loadArticles();
+        loadPosUsers();
+        loadPrinters();
+//            loadSpaces();
+
     }
+
+}
 
