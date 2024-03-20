@@ -42,7 +42,7 @@ public class TestPOSUsers extends TestBase{
         Helpers.waitVisibleByXpath(driver, "//span[text()='Mary']");
         assertFalse(driver.findElements(By.xpath("//span[text()='Mary']")).isEmpty());
         deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Mary']")).isEmpty());
+        Helpers.waitInvisibleByXpath(driver,"//span[text()='Mary']");
         Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
     }
 }

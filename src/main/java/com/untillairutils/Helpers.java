@@ -98,6 +98,7 @@ public abstract class Helpers {
                     Thread.sleep(20);
 
                     clickByXpath(driver, xp);
+                    Helpers.waitInvisibleByXpath(driver, xp);
                     return;
                 }
                 dropDown.sendKeys(Keys.DOWN);
@@ -114,7 +115,7 @@ public abstract class Helpers {
     public static void selectDropDownItemByXpath(WebDriver driver, String xpath, String item) {
         WebElement dropDown = driver.findElement(By.xpath(xpath));
         dropDown.click();
-        Helpers.waitVisibleByXpath(driver, "//div[@class=\"rc-virtual-list\"]");
+        Helpers.waitVisibleByXpath(driver, "//div[@class=\"rc-virtual-list-holder\"]");
         String xp = String.format("//div[@class='ant-select-item-option-content' and text()='%s']", item);
         for (int i = 0; i < 100; i++) {
             List<WebElement> list = driver.findElements(By.xpath(xp));
@@ -138,6 +139,7 @@ public abstract class Helpers {
 
         throw new RuntimeException("Item not found: " + item);
     }
+
 
     public static String formatDbl(double num) {
         DecimalFormatSymbols decimalSymbols = DecimalFormatSymbols.getInstance();

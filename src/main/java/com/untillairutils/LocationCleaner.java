@@ -65,8 +65,9 @@ public class LocationCleaner {
 
         cleanProducts();
         cleanPosUsers();
-        cleanPrinters();
         cleanSpaces();
+        cleanPrinters();
+
     }
 
 
@@ -76,14 +77,17 @@ public void cleanItems(String title, String itemName){
 
     String xpath1 = String.format("//span[text()='Add new %s']", itemName);
     String xpath2 = String.format("//span[text()='Add your first %s']", itemName);
-    String xpath3 = "//div[text()='You need to create these entities']]";
+    String xpath3 = "//div[text()='You need to create these entities']";
+    String xpath4  = String.format("//span[text()='Add first %s']", itemName);
+
     WebDriverWait wait = new WebDriverWait(driver, 10);
     ExpectedCondition<WebElement> c1 = ExpectedConditions
             .elementToBeClickable(By.xpath(xpath1));
     ExpectedCondition<WebElement> c2 = ExpectedConditions
             .elementToBeClickable(By.xpath(xpath2));
     ExpectedCondition<WebElement> c3 = ExpectedConditions.elementToBeClickable(By.xpath(xpath3));
-    wait.until(ExpectedConditions.or(c1, c2, c3));
+    ExpectedCondition<WebElement> c4 = ExpectedConditions.elementToBeClickable(By.xpath(xpath4));
+    wait.until(ExpectedConditions.or(c1, c2, c3, c4));
 
     String dataRowCell = "//tr[@data-row-key]//td//span";
     List<WebElement> rows = driver.findElements(By.xpath(dataRowCell));
@@ -111,14 +115,13 @@ public void cleanItems(String title, String itemName){
 
     }
     private void cleanPosUsers() {
-        cleanItems("POS Users", "POS user");
+        cleanItems("POS Users", "user");
+    }
+    private void cleanSpaces() {
+        cleanItems("Spaces", "space");
     }
 
     private void cleanPrinters() {
         cleanItems("Printers", "printer");
-    }
-
-    private void cleanSpaces() {
-        cleanItems("Spaces", "space");
     }
 }

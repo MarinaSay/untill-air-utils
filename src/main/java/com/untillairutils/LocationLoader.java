@@ -343,6 +343,8 @@ public class LocationLoader {
 
         if (chooseLocation.size() != 0) {
             Helpers.selectDropDownItemByXpath(driver, locationXPATH, location);
+        } else {
+            ////header//span[text()='SingingBird']
         }
 
         initSettings();

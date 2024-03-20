@@ -25,9 +25,26 @@ public class TestGeneral extends TestBase {
         closeWelcomePopUp();
     }
 
-    @AfterEach
-    void tearDown() {
-        logout();
+   // @AfterEach
+   // void tearDown() {
+    //    logout();
+    //}
+
+
+    @Test
+    void testMessages(){
+        Helpers.clickByXpath(driver, "//span[text()='General']");
+        Helpers.clickByXpath(driver, "//span[text()='Article messages']");
+        Helpers.waitByXpath(driver, "//span[text()='Add new message']");
+        Helpers.clickByXpath(driver, "//span[text()='Add new message']");
+        Helpers.inputById(driver, "name", "Roasting");
+        Helpers.inputById(driver, "text", "Medium");
+        confirmContinue();
+        Helpers.inputByXpath(driver,"//input[contains(@placeholder,'What are you looking ')]","Roasting");
+        deleteFirstItem();
+        Helpers.waitInvisibleByXpath(driver,"//span[text()='Roasting']" );
+        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
+
     }
 
     @Test
@@ -36,21 +53,34 @@ public class TestGeneral extends TestBase {
         Helpers.clickByXpath(driver, "//span[text()='Discounts']");
         Helpers.waitByXpath(driver, "//span[text()='Add new discount']");
         Helpers.clickByXpath(driver, "//span[text()='Add new discount']");
-        Helpers.inputById(driver, "name", "Monday");
+        Helpers.inputById(driver, "name", "Weekend");
         Helpers.selectDropDownItemById(driver, "value_type", "Percent");
         String inputPrice = "//input[contains(@class, 'ant-input-number-input')]";
         Helpers.inputByXpath(driver, inputPrice, formatDbl(10));
-        Helpers.selectDropDownItemById(driver, "discount_type", "Whole bill");
-        Helpers.scrollAndClickByXpath(driver, "//span[text()='All items']");
-        Helpers.selectDropDownItemById(driver, "id_discount_reasons", "Free discount reason");
+        Helpers.selectDropDownItemById(driver, "discount_type", "Selected items");
         Helpers.clickByXpath(driver, "//span[text()='Save']");
-        Helpers.waitVisibleByXpath(driver, "//span[text()='Monday']");
-        assertFalse(driver.findElements(By.xpath("//span[text()='Monday']")).isEmpty());
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Weekend']");
+        Helpers.inputByXpath(driver,"//input[contains(@placeholder,'What are you looking ')]","Weekend");
         deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Monday']")).isEmpty());
+        Helpers.waitInvisibleByXpath(driver,"//span[text()='Weekend']" );
         Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
     }
+    @Test
+    void testPeriods(){
+        Helpers.clickByXpath(driver, "//span[text()='General']");
+        Helpers.clickByXpath(driver, "//span[text()='Periods']");
+        Helpers.waitByXpath(driver, "//span[text()='Add new period']");
+        Helpers.clickByXpath(driver, "//span[text()='Add new period']");
+        Helpers.inputById(driver, "name", "Morning");
+        Helpers.clickByXpath(driver, "//span[text()='Save']");
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Morning']");
+        Helpers.inputByXpath(driver,"//input[contains(@placeholder,'What are you looking ')]","Morning");
+        deleteFirstItem();
+        Helpers.waitInvisibleByXpath(driver,"//span[text()='Morning']" );
+        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
 
+
+    }
     @Test
     void testNewReceiptPrinter() {
         Helpers.clickByXpath(driver, "//span[text()='General']");
@@ -64,12 +94,32 @@ public class TestGeneral extends TestBase {
         Helpers.clickByXpath(driver, "//span[text()='Receipt']");
         Helpers.clickByXpath(driver, "//span[text()='Save']");
         Helpers.waitVisibleByXpath(driver, "//span[text()='Kitchen']");
-        assertFalse(driver.findElements(By.xpath("//span[text()='Kitchen']")).isEmpty());
         Helpers.clickByXpathWithAttempts(driver, "//span[text()='Ok']", 10);
         deleteFirstItem();
-        assertTrue(driver.findElements(By.xpath("//span[text()='Kitchen']")).isEmpty());
+        Helpers.waitInvisibleByXpath(driver,"//span[text()='Kitchen']");
         Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
 
     }
 
+    @Test
+    void testNewTerminal() {
+        Helpers.clickByXpath(driver, "//span[text()='General']");
+        Helpers.clickByXpath(driver, "//span[text()='Equipment']");
+        Helpers.waitByXpath(driver, "//span[text()='Add new equipment']");
+        Helpers.clickByXpath(driver, "//span[text()='Add new equipment']");
+        Helpers.waitByXpath(driver, "//span[text()='Terminal']");
+        Helpers.clickByXpath(driver, "//span[text()='Terminal']");
+        String continueXP = "//span[text()='Continue']";
+        Helpers.clickByXpath(driver, continueXP);
+        Helpers.waitVisibleByXpath(driver,"//div[text()='Add terminal']" );
+        Helpers.inputById(driver, "name", "Android");
+        Helpers.inputById(driver, "poiid", "111");
+        Helpers.clickByXpath(driver, "//span[text()='Continue']");
+        Helpers.clickByXpath(driver, "//span[text()='Ok']");
+        Helpers.waitVisibleByXpath(driver, "//span[text()='Android']");
+        deleteFirstItem();
+        Helpers.waitInvisibleByXpath(driver,"//span[text()='Android']");
+        Helpers.waitInvisibleByXpath(driver, "//div[contains(text(),'is deleted')]");
+
+    }
 }
