@@ -1,6 +1,5 @@
 package com.untillairutils;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,6 @@ public class LocationLoader {
         this.url = url;
         this.login = login;
         this.password = password;
-        WebDriverManager.chromedriver().setup();
         this.driver = new ChromeDriver();
         this.location = location;
 
@@ -59,7 +58,7 @@ public class LocationLoader {
 
         Helpers.clickByXpath(driver, "//span[text()='Categories']");
 
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new category']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -88,7 +87,7 @@ public class LocationLoader {
         Helpers.clickByXpath(driver, "//span[text()='Groups']");
         Helpers.waitByXpath(driver, "//span[text()='Add new group']");
 
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new group']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -137,7 +136,7 @@ public class LocationLoader {
     private void loadDepartmens() {
         Helpers.clickByXpath(driver, "//span[text()='Departments']");
         Helpers.waitByXpath(driver, "//span[text()='Add new department']");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new department']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -175,7 +174,7 @@ public class LocationLoader {
     private void loadCourses() {
         Helpers.clickByXpath(driver, "//span[text()='Courses']");
         Helpers.waitByXpath(driver, "//span[text()='Add new course']");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//tbody[@Class='ant-table-tbody']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -196,7 +195,7 @@ public class LocationLoader {
     private void loadArticles() {
         Helpers.clickByXpath(driver, "//span[text()='Articles']");
         Helpers.waitByXpath(driver, "//span[text()='Add new article']");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new article']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -237,7 +236,7 @@ public class LocationLoader {
     private void loadPosUsers() {
         Helpers.clickByXpath(driver, "//span[text()='POS Users']");
         Helpers.waitByXpath(driver, "//span[text()='Add new user']");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new user']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -269,7 +268,7 @@ public class LocationLoader {
         Helpers.clickByXpathWithAttempts(driver, "//span[text()='General']", 10);
         Helpers.clickByXpath(driver, "//span[text()='Equipment']");
         Helpers.waitByXpath(driver, "//span[text()='Add new equipment']");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new equipment']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions
@@ -304,7 +303,7 @@ public class LocationLoader {
 
     private void loadSpaces() {
         Helpers.clickByXpath(driver, "//span[text()='Spaces']");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         ExpectedCondition<WebElement> c1 = ExpectedConditions
                 .elementToBeClickable(By.xpath("//span[text()='Add new space']"));
         ExpectedCondition<WebElement> c2 = ExpectedConditions

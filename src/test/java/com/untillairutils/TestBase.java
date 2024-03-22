@@ -1,6 +1,5 @@
 package com.untillairutils;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,12 +17,6 @@ public abstract class TestBase {
     static String ENV_PASSWORD = "UNTILLAIR_PASSWORD";
     static String ENV_LOCATION = "UNTILLAIR_LOCATION";
     WebDriver driver;
-
-    @BeforeAll
-    static void setupAll() {
-        WebDriverManager.chromedriver().setup();
-    }
-
     public TestBase() {
         this.driver = new ChromeDriver();
         driver.manage().window().maximize();

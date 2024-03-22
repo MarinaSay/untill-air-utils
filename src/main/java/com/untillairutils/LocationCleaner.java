@@ -1,6 +1,5 @@
 package com.untillairutils;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class LocationCleaner {
@@ -27,7 +27,6 @@ public class LocationCleaner {
             System.exit(1);
         }
 
-        WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
         String url = args[0];
@@ -80,7 +79,7 @@ public void cleanItems(String title, String itemName){
     String xpath3 = "//div[text()='You need to create these entities']";
     String xpath4  = String.format("//span[text()='Add first %s']", itemName);
 
-    WebDriverWait wait = new WebDriverWait(driver, 10);
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     ExpectedCondition<WebElement> c1 = ExpectedConditions
             .elementToBeClickable(By.xpath(xpath1));
     ExpectedCondition<WebElement> c2 = ExpectedConditions
