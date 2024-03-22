@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.Duration;
 import java.util.List;
 
 public abstract class Helpers {
@@ -35,13 +36,13 @@ public abstract class Helpers {
     }
 
     public static void clickByXpath(WebDriver driver, String xPath) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
         driver.findElement(By.xpath(xPath)).click();
     }
 
     public static void clickByXpathWithAttempts(WebDriver driver, String xPath, int attempts) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath)));
         for (int i = 0; i < attempts; i++) {
             try {
@@ -55,22 +56,22 @@ public abstract class Helpers {
     }
 
     public static void waitVisibleByXpath(WebDriver driver, String xPath) {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
     }
 
     public static void waitInvisibleByXpath(WebDriver driver, String xPath) {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(xPath)));
     }
 
     public static void waitId(WebDriver driver, String id) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.id(id)));
     }
 
     public static void waitByXpath(WebDriver driver, String xp) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xp)));
     }
 
